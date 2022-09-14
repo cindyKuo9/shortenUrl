@@ -5,7 +5,6 @@ const urlShorten = require('../../models/urlShorten')
 
 router.get('/', (req, res) => {
   res.render('index')
-  console.log('home')
 })
 
 router.post('/', (req, res) => {
@@ -21,7 +20,6 @@ router.post('/', (req, res) => {
       } else {
         do {
           shortUrl = randomString(5)
-          console.log(shortUrl)
         } while (urls.some(urlItem => urlItem.shortenUrl === shortUrl))
         urlShorten.create({ url: oriUrl, shortenUrl: shortUrl })
       }
@@ -33,12 +31,10 @@ router.post('/', (req, res) => {
 })
 
 router.get('/:shortUrl', (req, res) => {
-  console.log(req.params.shortUrl)
   urlShorten.findOne({ shortenUrl: req.params.shortUrl })
     .lean()
     .then(url => {
       if (url) {
-        console.log(url.url)
         res.redirect(url.url)
       } else {
         res.render('notFind', { shortUrl: req.headers.host + '/' + req.params.shortUrl })
