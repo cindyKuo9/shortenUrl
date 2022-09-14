@@ -1,3 +1,4 @@
+<div class="alert alert-success d-none" id="copied-msg">copied</div>
 <div class="col-sm-6 mx-auto mt-5">
   <div class="w-50 mx-auto">
     <img src="https://assets-lighthouse.alphacamp.co/uploads/image/file/16716/ExportedContentImage_00.png"
@@ -5,6 +6,22 @@
   </div>
   <div class="card-body mt-4 row justify-content-center">
     <h4>Success! Please use this link:</h4>
-    <p type="url">{{this.shortUrl}}</p>
+    <p type="url" id="short-url">{{this.shortUrl}}</p>
+    <button class="btn btn-outline-primary w-25 mt-2" id="copy-btn">Copy</button>
   </div>
 </div>
+<script>
+  const copyBtn = document.querySelector('#copy-btn')
+  const copiedMsg = document.querySelector('#copied-msg')
+  copyBtn.addEventListener('click', () => {
+    const shortUrl = document.querySelector('#short-url')
+    console.log(shortUrl.textContent)
+    navigator.clipboard.writeText(shortUrl.textContent)
+      .then(() => {
+        copiedMsg.classList.remove('d-none')
+        window.setTimeout(() => {
+          copiedMsg.classList.add('d-none')
+        }, 1500)
+      })
+  })
+</script>
