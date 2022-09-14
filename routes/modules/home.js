@@ -27,7 +27,22 @@ router.post('/', (req, res) => {
       }
     })
     .then(() => {
-      res.render('shortenUrl', { oriUrl, shortUrl })
+      res.render('shortenUrl', { oriUrl, shortUrl: req.headers.host + '/' + shortUrl })
+    })
+    .catch(error => console.log(error))
+})
+
+router.get('/:shortUrl', (req, res) => {
+  console.log(req.params.shortUrl)
+  urlShorten.findOne({ shortenUrl: req.params.shortUrl })
+    .lean()
+    .then(url => {
+      if (url) {
+        console.log(url.url)
+        res.redirect(url.url)
+      } else {
+        res.render('notFind', { shortUrl: req.headers.host + '/' + req.params.shortUrl })
+      }
     })
     .catch(error => console.log(error))
 })
